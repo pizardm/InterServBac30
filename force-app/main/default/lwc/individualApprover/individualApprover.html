@@ -1,0 +1,72 @@
+<!--
+  @description       : 
+  @author            : emeza@freewayconsulting.com
+  @group             : 
+ * @last modified on  : 2024-08-14
+ * @last modified by  : Rodrigo Olivera - rolivera@ts4.mx / Juan Pedraza - jpedraza@ts4.mx
+ **/
+-->
+<template>
+    <div class="spinner">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+            </lightning-spinner>
+        </template>
+    </div>
+
+    <lightning-card title="Aprobar partidas NO y MB" icon-name="custom:custom63">
+        <div class="slds-m-around_medium ">
+            <template if:true={isEmptyQLINO}>
+                <div class="slds-text-heading_small slds-m-around_medium">Partidas Normales</div>
+                <div>
+                    <lightning-datatable key-field="Id" data={quoteLineItemsNO} columns={columnsNO}
+                        onrowaction={handleRowAction} onrowselection={getSelectedNameNO}>
+                    </lightning-datatable>
+                </div>
+            </template>
+            <template if:true={error}>
+                {error}>
+            </template>
+        </div>
+        <div class="slds-m-around_medium">
+            <template if:true={isEmptyQLIMB}>
+                <div class="slds-text-heading_small slds-m-around_medium">Partidas Muebles de Baño</div>
+                <div>                   
+                    <lightning-datatable key-field="Id" data={quoteLineItemsMB} columns={columnsMB}
+                        onrowaction={handleRowAction} onrowselection={getSelectedNameMB}>
+                    </lightning-datatable>
+                </div>
+            </template>
+            <template if:true={error}>
+                {error}
+            </template>
+        </div>
+        <template if:true={emptyPendingApproval}>
+            <div class="demo-only" style="padding:0.5rem;background:#16325c">
+                <div class="slds-text-color_inverse">No hay partidas pendientes por aprobar.</div>
+            </div>
+        </template>
+        <template if:true={noProductsToApprove}>
+            <div class="slds-text-color_error slds-text-heading_small slds-m-around_medium">No hay productos para
+                aprobar.
+            </div>
+        </template>
+        <div class="c-container slds-m-around_medium">
+            <lightning-layout>
+                <lightning-layout-item size="12">
+                    <lightning-textarea name="inputTextArea" disabled={emptyPendingApproval}
+                        label="Comentarios de aprobación" placeholder="Escribe tus comentarios aquí..."
+                        onchange={changeComments}></lightning-textarea>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <div slot="footer">
+            <lightning-button label="Aprobar" variant="brand" title="ApproveProcess" onclick={handleClickApproveProcess}
+                disabled={isApproveButtonDisabled} class="slds-m-center_x-small"
+                style="margin: 14px;"></lightning-button>
+            <lightning-button label="Rechazar" variant="destructive" title="RejectProcess"
+                onclick={handleClickRejectProcess} disabled={isApproveButtonDisabled} class="slds-m-center_x-small"
+                style="margin: 14px;"></lightning-button>
+        </div>
+    </lightning-card>
+</template>

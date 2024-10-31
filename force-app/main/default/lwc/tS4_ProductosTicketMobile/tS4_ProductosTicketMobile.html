@@ -1,0 +1,148 @@
+<template>
+    <lightning-card title="Productos del Ticket" icon-name="custom:custom63">
+        <div class="slds-m-around_medium">
+            <lightning-input 
+                type="search"
+                label=""
+                onchange={handleSearch}
+                value={searchTerm}
+                class="slds-m-bottom_small">
+            </lightning-input>
+
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Cargando" size="medium"></lightning-spinner>
+            </template>
+            
+            <template if:true={filteredProducts}>
+                <ul class="slds-has-dividers_bottom-space">
+                    <template for:each={displayedProducts} for:item="producto">
+                        <li key={producto.Id} class="slds-item">
+                            <div class="slds-m-top_medium slds-text-align_center">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_3-of-4">
+                                        <p class="slds-text-heading_small">{producto.TS4_Clave_de_articulo__c}</p>
+                                        <p class="slds-text-body_small">{producto.DESCRIPCION__c}</p>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-4">
+                                        <lightning-button-icon 
+                                            icon-name="utility:edit" 
+                                            alternative-text="Editar" 
+                                            title="Editar"
+                                            onclick={handleEditClick} 
+                                            data-id={producto.Id}>
+                                        </lightning-button-icon>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+                
+                <div class="slds-m-top_medium slds-text-align_center">
+                    <lightning-button-group>
+                        <lightning-button 
+                            label="Anterior" 
+                            onclick={handlePrevious} 
+                            disabled={isFirstPage}>
+                        </lightning-button>
+                        <lightning-button 
+                            label="Siguiente" 
+                            onclick={handleNext} 
+                            disabled={isLastPage}>
+                        </lightning-button>
+                    </lightning-button-group>
+                    <p class="slds-m-top_x-small">
+                        Página {currentPage} de {totalPages}
+                    </p>
+                </div>
+                <div class="slds-m-top_medium slds-text-align_center">
+                    <lightning-button 
+                        label="Ver todxs" 
+                        onclick={handleRedirect} 
+                        variant="brand">
+                    </lightning-button>
+                </div>
+                
+            </template>
+            
+            <template if:true={productos.error}>
+                <p>Error: {productos.error.body.message}</p>
+            </template>
+        </div>
+    </lightning-card>
+    <!-- Modal para edición -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Editar Producto</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <span class="slds-form-element__label">Clave de artículo</span>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{currentProduct.TS4_Clave_de_articulo__c}</div>
+                        </div>
+                    </div>
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <span class="slds-form-element__label">Descripción</span>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{currentProduct.DESCRIPCION__c}</div>
+                        </div>
+                    </div>
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <span class="slds-form-element__label">Tipo</span>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{currentProduct.TS4_Tipo__c}</div>
+                        </div>
+                    </div>
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <span class="slds-form-element__label">Precio Unitario</span>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{currentProduct.TS4_PRECIOUNITARIO__c}</div>
+                        </div>
+                    </div>
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <span class="slds-form-element__label">Cantidad</span>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{currentProduct.CANTIDAD__c}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <span class="slds-form-element__label">Dictamen</span>
+                        <div class="slds-form-element__control">
+                            <div class="slds-text-body_regular">{currentProduct.TS4_Dictamen__c}</div>
+                        </div>
+                    </div>
+                    <lightning-textarea 
+                        label="Comentario Asesor Técnico" 
+                        value={currentProduct.TS4_Comentario_Asesor_Tecnico__c} 
+                        onchange={handleFieldChange} 
+                        data-field="TS4_Comentario_Asesor_Tecnico__c"
+                        class="slds-m-top_medium textarea-large"
+                        rows="6">
+                    </lightning-textarea>
+                    <lightning-input type="number" label="Monto Garantía" value={currentProduct.TS4_Monto_Garantia__c} onchange={handleFieldChange} data-field="TS4_Monto_Garantia__c"></lightning-input>
+                    <lightning-input type="number" label="Número de piezas a reclamar" value={currentProduct.TS4_Numero_de_piezas_a_reclamar__c} onchange={handleFieldChange} data-field="TS4_Numero_de_piezas_a_reclamar__c"></lightning-input>
+                    
+                   
+                    
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>Cancelar</button>
+                    <button class="slds-button slds-button_brand" onclick={handleSave}>Guardar</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    
+
+</template>

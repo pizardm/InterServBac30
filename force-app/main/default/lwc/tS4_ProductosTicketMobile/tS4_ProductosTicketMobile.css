@@ -1,0 +1,11 @@
+.textarea-large {
+    width: 100%; /* Ancho total */
+}
+
+.textarea-large textarea {
+    height: 300px; /* Ajusta la altura según tus necesidades */
+    font-size: 16px; /* Tamaño de fuente */
+    padding: 10px; /* Espaciado interior */
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+    resize: none; /* Opcional: evita que el usuario redimensione el textarea */
+}

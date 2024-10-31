@@ -1,0 +1,53 @@
+<!-- skillAreaAssignment.html -->
+<template>
+    <lightning-card title="Asignación de Habilidades por Área" icon-name="standard:skill">
+        <div class="slds-m-around_medium">
+            <lightning-combobox
+                label="Área"
+                options={areas}
+                value={selectedArea}
+                onchange={handleAreaChange}
+                required
+            ></lightning-combobox>
+            <lightning-combobox
+                label="Recurso de Servicio"
+                options={serviceResources}
+                value={selectedServiceResourceId}
+                onchange={handleServiceResourceChange}
+                required
+            ></lightning-combobox>
+            <lightning-input 
+                type="datetime" 
+                label="Fecha y hora de inicio" 
+                value={startTime}
+                onchange={handleStartTimeChange}
+                required
+            ></lightning-input>
+            <lightning-input 
+                type="datetime" 
+                label="Fecha y hora de fin" 
+                value={endTime}
+                onchange={handleEndTimeChange}
+                required
+            ></lightning-input>
+            <div class="slds-m-top_medium">
+                <lightning-button 
+                    label="Asignar Habilidades" 
+                    onclick={handleAssign} 
+                    variant="brand"
+                    class="slds-m-right_x-small"
+                    disabled={isLoading}
+                ></lightning-button>
+                <lightning-button 
+                    label="Limpiar" 
+                    onclick={resetForm} 
+                    variant="neutral"
+                    disabled={isLoading}
+                ></lightning-button>
+            </div>
+        </div>
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Cargando" size="small"></lightning-spinner>
+        </template>
+    </lightning-card>
+</template>

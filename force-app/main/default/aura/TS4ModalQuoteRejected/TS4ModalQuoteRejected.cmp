@@ -1,0 +1,40 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="TS4_ModalQuoteRejectedController">
+    <!-- Atributos -->
+    <aura:attribute name="isOpen" type="Boolean" default="false" />
+
+    <!-- Iniciar al cargar el componente -->
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+
+    <!-- Modal -->
+    <aura:if isTrue="{!v.isOpen}">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Header Container -->
+                <div class="header-footer-container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                title="Close" onclick="{!c.closeModal}">
+                            <lightning:icon iconName="utility:close" alternativeText="close" />
+                            <span class="slds-assistive-text">Cerrar</span>
+                        </button>
+                        <h2 class="slds-text-heading_medium">Aprobación de Cotización</h2>
+                    </header>
+                </div>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- Mostrar imagen del recurso estático -->
+                    <img src="{!$Resource.AlertModal}" alt="Modal Alert" style="width:100%; max-width:64px;" />
+                    <p>El grupo de productos a aprobar pertenece a una cotización que ya fue <strong><span style="text-transform: uppercase;">rechazada</span></strong>. Favor de omitir el proceso.</p>
+                </div>
+
+                <!-- Footer Container -->
+                <div class="header-footer-container">
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" label="Cerrar" onclick="{!c.closeModal}" />
+                    </footer>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

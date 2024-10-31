@@ -1,0 +1,40 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="TS4_productsTableController">
+    <!-- attributes -->
+	<aura:attribute name="recordId" type="String" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="currentList" type="Object[]" />
+    <aura:attribute name="isData" type="boolean" default="false"/>
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <!--Paginado-->
+	<aura:attribute type="Integer" name="pageNumber" default="1" />
+	<aura:attribute type="Integer" name="maxPage" default="1" />
+	<aura:handler name="change" value="{!v.pageNumber}" action="{!c.renderPage}" />
+
+    <lightning:card title="Productos">
+        <aura:if isTrue="{!v.isData}">
+            <p class="slds-p-horizontal_small">
+                <!-- the container element determine the height of the datatable -->
+                <div style="height: 150px">
+                    <lightning:datatable
+                            keyField="id"
+                            data="{! v.currentList }"
+                            columns="{! v.columns }"
+                            hideCheckboxColumn="true"/>
+                </div>
+                <div class="slds-grid slds-wrap slds-align_absolute-center">
+                    <!-- Paginación -->
+                    <c:Pagination currentPageNumber="{!v.pageNumber}" maxPageNumber="{!v.maxPage}" />
+                </div>
+            </p>
+            <aura:set attribute="else">
+                <p class="slds-p-horizontal_small">
+                    Este caso no tiene productos para mostrar
+                </p>
+            </aura:set>
+        </aura:if>
+    
+    </lightning:card>
+    
+</aura:component>

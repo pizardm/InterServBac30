@@ -1,0 +1,70 @@
+<template>
+    <div class="slds-p-around_medium slds-grid slds-grid_align-spread slds-wrap">
+        <!-- Usuarios disponibles -->
+        <div class="slds-col slds-size_1-of-5 slds-m-bottom_medium">
+            <lightning-card title="Usuarios disponibles">
+                <ul class="slds-has-dividers_around-space">
+                    <template for:each={availableUsers} for:item="user">
+                        <li key={user.Id} class="slds-item" draggable="true" ondragstart={handleDragStart} data-id={user.Id}>
+                            <div class="slds-p-around_small slds-theme_shade">{user.Name}</div>
+                        </li>
+                    </template>
+                </ul>
+            </lightning-card>
+        </div>
+
+        <!-- Turnos -->
+        <div class="slds-col slds-size_1-of-5 slds-m-bottom_medium">
+            <lightning-card title="Turno 1">
+                <div class="slds-box slds-box_xx-small slds-theme_default" ondragover={handleDragOver} ondrop={handleDrop} data-turno="Turno 1">
+                    <ul class="slds-has-dividers_around-space">
+                        <template for:each={turno1Users} for:item="user">
+                            <li key={user.Id} class="slds-item">
+                                <div class="slds-p-around_small slds-theme_success">{user.Name}</div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </lightning-card>
+        </div>
+
+        <div class="slds-col slds-size_1-of-5 slds-m-bottom_medium">
+            <lightning-card title="Turno 2">
+                <div class="slds-box slds-box_xx-small slds-theme_default" ondragover={handleDragOver} ondrop={handleDrop} data-turno="Turno 2">
+                    <ul class="slds-has-dividers_around-space">
+                        <template for:each={turno2Users} for:item="user">
+                            <li key={user.Id} class="slds-item">
+                                <div class="slds-p-around_small slds-theme_success">{user.Name}</div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </lightning-card>
+        </div>
+
+        <div class="slds-col slds-size_1-of-5 slds-m-bottom_medium">
+            <lightning-card title="Turno 3">
+                <div class="slds-box slds-box_xx-small slds-theme_default" ondragover={handleDragOver} ondrop={handleDrop} data-turno="Turno 3">
+                    <ul class="slds-has-dividers_around-space">
+                        <template for:each={turno3Users} for:item="user">
+                            <li key={user.Id} class="slds-item">
+                                <div class="slds-p-around_small slds-theme_success">{user.Name}</div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </lightning-card>
+        </div>
+
+        <!-- Guardia -->
+        <div class="slds-col slds-size_1-of-5 slds-m-bottom_medium">
+            <lightning-card title="Guardia">
+                <div class="slds-box slds-box_xx-small slds-theme_default" ondragover={handleDragOver} ondrop={handleDrop} data-turno="Guardia">
+                    <template if:true={guardiaUser}>
+                        <div class="slds-p-around_small slds-theme_warning">{guardiaUser.Name}</div>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,41 @@
+.THIS .kanban-container {
+    display: flex;
+    justify-content: space-around; /* Distribuye las columnas uniformemente */
+    gap: 20px; /* Espacio entre las columnas */
+}
+
+.THIS .kanban-column {
+    width: 18%; /* Ajusta el ancho de cada columna */
+    min-height: 300px; /* Establece una altura mínima para las columnas */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    padding: 10px;
+}
+
+.THIS .kanban-list {
+    min-height: 200px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px dashed #ccc;
+}
+
+.THIS .kanban-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.THIS .kanban-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.THIS .kanban-item span {
+    margin-left: 10px;
+}

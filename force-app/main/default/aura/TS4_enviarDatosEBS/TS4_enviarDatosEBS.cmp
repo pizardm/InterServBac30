@@ -1,0 +1,71 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName" access="global" controller="TS4_ReclamosEBSRest">
+     <aura:html tag="style">
+        .slds-modal__close {
+            display: none !important;
+        }
+    </aura:html>
+    <!-- Atributos -->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="sObjectName" type="String" />
+    <aura:attribute name="flag" type="Boolean" default="false"/>
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    <aura:attribute name="isErrorState" type="Boolean" default="false"/>
+    <aura:attribute name="itemsData" type="Object" />
+
+    <!-- Handler para inicializar el componente -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <!-- Modal del Quick Action-->
+    <div class="slds-modal slds-fade-in-open slds-modal_large">
+        <div class="slds-modal__container">
+            <aura:if isTrue="{!v.spinner}">
+                <div class="slds-spinner_container">
+                    <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                        <span class="slds-assistive-text">Procesando</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </aura:if>
+
+            <!-- Contenido del modal -->
+            <div class="slds-modal__content" style="padding-bottom: 1em;padding-top: 1em;">
+                <aura:if isTrue="{!v.isErrorState}">
+                    <!-- Mostrar los errores de productos -->
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            Errores en Productos
+                        </div>
+                        <div class="slds-p-around_medium">
+                            <aura:iteration items="{!v.itemsData.items}" var="item">
+                                <div class="slds-box slds-theme_default slds-m-bottom_small">
+                                    <p style="margin-bottom: 10px;"><strong>Campos requeridos para el producto: </strong> {!item.item}</p>
+                                    <aura:iteration items="{!item.item_error}" var="error">
+                                        <p class="slds-text-color_error">Error: {!error.mensaje}</p>
+                                    </aura:iteration>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                    </div>
+                </aura:if>
+
+                <aura:if isTrue="{!not(v.isErrorState)}">
+                    <!-- Mensaje de procesamiento -->
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            Procesamiento de Productos
+                        </div>
+                        <div class="custom-card-body">
+                            <p>Estamos procesando tus productos, este proceso puede tardar unos minutos.</p>
+                        </div>
+                    </div>
+                </aura:if>
+            </div>
+
+            <!-- Footer del modal -->
+            <div class="slds-modal__footer">
+                <lightning:button label="Cerrar" onclick="{!c.closeQuickAction}" variant="neutral"/>
+            </div>
+        </div>
+    </div>
+</aura:component>

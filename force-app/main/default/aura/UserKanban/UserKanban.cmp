@@ -1,0 +1,53 @@
+<aura:component controller="UserKanbanController" implements="force:appHostable,flexipage:availableForAllPageTypes" access="global">
+    
+    <!-- Definición de atributos -->
+    <aura:attribute name="availableUsers" type="User[]" />
+
+    <!-- Handler de inicialización -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Layout del tablero Kanban -->
+    <div class="kanban-container">
+        <!-- Columna de usuarios disponibles -->
+        <div class="kanban-column">
+            <h3>Usuarios Disponibles</h3>
+            <div id="availableUsers" class="kanban-list" ondrop="{!c.handleDrop}" ondragover="{!c.allowDrop}">
+                <!-- Itera sobre la lista de usuarios -->
+                <aura:iteration items="{!v.availableUsers}" var="user">
+                    <div class="kanban-item" draggable="true" ondragstart="{!c.handleDragStart}" data-userid="{!user.Id}">
+                        <!-- Asegúrate de que se renderice la imagen -->
+                        <img src="{!user.FullPhotoUrl}" alt="User Photo" class="user-photo" style="width:50px; height:50px;"/>
+                        <!-- Nombre del usuario -->
+                        <span>{!user.Name}</span>
+                    </div>
+                </aura:iteration>
+            </div>
+        </div>
+        <!-- Columnas de Turnos y Guardia -->
+        <div class="kanban-column">
+            <h3>Turno 1</h3>
+            <div id="shift1" class="kanban-list" ondrop="{!c.handleDrop}" ondragover="{!c.allowDrop}"></div>
+        </div>
+        
+        <div class="kanban-column">
+            <h3>Turno 2</h3>
+            <div id="shift2" class="kanban-list" ondrop="{!c.handleDrop}" ondragover="{!c.allowDrop}"></div>
+        </div>
+
+        <div class="kanban-column">
+            <h3>Turno 3</h3>
+            <div id="shift3" class="kanban-list" ondrop="{!c.handleDrop}" ondragover="{!c.allowDrop}"></div>
+        </div>
+
+        <div class="kanban-column">
+            <h3>Guardia</h3>
+            <div id="guard" class="kanban-list" ondrop="{!c.handleDrop}" ondragover="{!c.allowDrop}"></div>
+        </div>
+
+        <div class="kanban-column">
+            <h3>Feriado</h3>
+            <div id="holiday" class="kanban-list" ondrop="{!c.handleDrop}" ondragover="{!c.allowDrop}"></div>
+        </div>
+    </div>
+
+</aura:component>

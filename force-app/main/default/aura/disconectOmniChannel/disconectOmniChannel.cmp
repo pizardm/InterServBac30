@@ -1,0 +1,4 @@
+<aura:component>
+    <lightning:omniToolkitAPI aura:id="omniToolkit" />  
+    <aura:handler event="lightning:omniChannelLogout" action="{! c.onLogout }"/>
+</aura:component>

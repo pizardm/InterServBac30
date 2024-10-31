@@ -1,0 +1,308 @@
+<apex:page controller="TS4_ProductoAprobarController" standardStylesheets="false" showHeader="false"
+   applyBodyTag="false" renderAs="PDF" applyHtmlTag="false" sidebar="false" language="es_ES">
+   <html>
+
+   <head>
+      <style>
+         @page {
+            size: A4;
+            margin-top: 1.50in;
+            margin-bottom: 3in;
+            margin-right: 0.6in;
+            margin-left: 0.6in;
+
+            @top-left {
+               content: element(header);
+            }
+
+            * {
+               font-size: 10px;
+               font-family: helvetica;
+            }
+
+            @bottom-center {
+               content: element(footer) counter(page) '/' counter(pages);
+            }
+
+         }
+
+         body {
+            /*font-family: Arial Unicode MS;*/
+            text-align: justify;
+            text-rendering: geometricPrecision;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 10px;
+         }
+
+         .textleft {
+            text-align: left;
+         }
+
+         .textright {
+            text-align: right;
+         }
+
+         .p10 {
+            padding: 10px 0;
+         }
+
+         .p20 {
+            padding: 20px 0;
+         }
+
+         .p30 {
+            padding: 30px 0;
+         }
+
+         .pt30 {
+            padding-top: 30px;
+         }
+
+         .p2 {
+            padding: 2px;
+         }
+
+         .pr2 {
+            padding-right: 2px;
+         }
+
+         .pl50 {
+            padding-left: 20px;
+         }
+
+         table.infoTable {
+            -fs-table-paginate: paginate;
+            margin: 0 auto;
+            width: 100%;
+            text-align: center;
+            font-size: 8px;
+         }
+
+         .infoTable th {
+            font-weight: bold;
+            border: 0.5px solid;
+            border-color: #e5e5e5;
+         }
+
+         .infoTable td {
+            text-align: center;
+            font-size: 8px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            border: 0.5px solid;
+            border-color: #e5e5e5;
+         }
+
+         .textRows {
+            width: 10px;
+            height: 10px;
+            text-align: center;
+            overflow: hidden;
+            white-space: normal;
+            text-overflow: ellipsis;
+         }
+
+         .textCenter {
+            text-align: center;
+         }
+
+         .logoBanner {
+            height: 100px;
+         }
+
+         .floatLeft {
+            position: relative;
+            left: 0px;
+            bottom: -20px;
+         }
+
+         .floatRight {
+            position: relative;
+            left: 230px;
+            bottom: 100px;
+         }
+
+         .borderFirma {
+            height: 100px;
+            border-right: solid #032952 2pt;
+         }
+
+         .fuenteSmall {
+            font-size: small;
+         }
+
+         div.header {
+            font-family: Helvetica, Arial, sans-serif;
+            margin-top: 10px;
+            position: running(header);
+            width: 100%;
+            margin-left: 10px;
+         }
+
+         .bold-text {
+            font-weight: bold;
+         }
+
+         .grayBackground {
+            background-color: #d9d9d9;
+         }
+
+         .consumoBackground {
+            background-color: #bfbfbf;
+         }
+
+         .footer {
+            position: running(footer);
+         }
+
+         .footer img {
+            width: 177mm;
+         }
+
+         #img3 {
+            object-fit: cover;
+         }
+         table.clientTable{
+            color: #ffffff;
+            padding: 5px 20px 5px 20px;
+            background-color: gray;
+            text-align: left;
+            width: 100%;
+          }
+          .clientTable td p{
+            margin: 0px;
+            padding: 2px;
+          }
+          .clientTable td {
+            padding: 0px;
+            margin: 0px;
+         }
+      </style>
+   </head>
+   <header>
+      <div class="header">
+         <img src="{!$Resource.INT_LogoInterceramic}" alt="Logo Interceramic" class="logoBanner"
+            style="height: 45px; width: 300px;" />
+      </div>
+   </header>
+   <footer>
+      <div class="footer" name="footer">
+         <img src="https://salesforce-media.s3.us-west-2.amazonaws.com/CintilloCotizacion.jpg" />
+         <!--<apex:outputText escape="false" value="{!template.SBQQ__RawMarkup__c}"/>-->
+      </div>
+   </footer>
+
+   <body>
+      
+      <p>&#160;</p>
+      <div class="textright p10">
+         <apex:outputText value="{0, date, d 'de '}{!CASE(MONTH(DATEVALUE(NOW())),
+               1, 'Enero',
+               2, 'Febrero',
+               3, 'Marzo', 
+               4, 'Abril', 
+               5, 'Mayo', 
+               6, 'Junio',
+               7, 'Julio',
+               8, 'Agosto',
+               9, 'Septiembre',
+               10, 'Octubre',
+               11, 'Noviembre',
+               12, 'Diciembre',
+               '-')}{0, date, ' de' yyyy}">
+            <!--dttInicio-->
+            <apex:param value="{!NOW()}" />
+            <!--dttInicio-->
+         </apex:outputText>
+      </div>
+      <p style="padding: 0px; margin: 0px;">Especificaciones nacionales</p>
+      <p style="padding: 0px; margin: 0px;">Internacional de Cerámica, S.A. B. de C.V.</p>
+      <p style="padding: 0px; margin: 0px;">Av. Carlos Pacheco No. 7200, sector 26</p>
+      <p style="padding: 0px; margin: 0px;">Chihuahua, Chihuahua, 31060, México</p>
+      <br></br>
+      <br></br>
+      <center>
+         <h1 class="heading heading--main">Grupo de productos a aprobar</h1>
+      </center><!--
+      <div class="box--half">
+         <h2 class="heading heading--sub">Informacion</h2>
+         <p><b>Grupo de productos a aprobar: </b>{!grupoAprobar.Name}</p>
+         <p><b>Oportunidad: </b>{!grupoAprobar.Cotizacion__r.SBQQ__Opportunity2__r.Name}</p>
+         <p
+            style="display:{!IF(grupoAprobar.Cotizacion__r.SBQQ__Opportunity2__r.Oportunidad_Relacionada__c == null, 'none', 'flex')}">
+            <b>Oportunidad Principal: </b>{!grupoAprobar.Cotizacion__r.SBQQ__Opportunity2__r.Oportunidad_Relacionada__c}
+         </p>
+         <p><b>Cotización: </b>{!grupoAprobar.Cotizacion__r.Name}</p>
+         <p><b>Descripción: </b>{!grupoAprobar.Descripcion__c}</p>
+         <p><b>Lista de precios: </b>$ {!grupoAprobar.Monto_minimo_cotizado__c}</p>
+
+      </div>
+      -->
+      <br></br>
+      <br></br>
+      <table class="clientTable" cellspacing="0">
+         <tr><td><p><b>Grupo de productos a aprobar: </b>{!grupoAprobar.Name}</p></td><td style="text-align: right;"><p><b> Cotización: </b>{!grupoAprobar.Cotizacion__r.Name}</p></td></tr>
+         <tr><td><p><b>Oportunidad: </b>{!grupoAprobar.Cotizacion__r.SBQQ__Opportunity2__r.Name}</p></td><td style="text-align: right;"><p><b> Cuenta: </b>{!grupoAprobar.Cotizacion__r.SBQQ__Opportunity2__r.Account.Name}</p></td></tr>
+         <tr style="display:{!IF(grupoAprobar.Cotizacion__r.SBQQ__Opportunity2__r.Oportunidad_Relacionada__r.Name == null, 'none', 'flex')}"><td><p><b>Oportunidad Principal: </b>{!grupoAprobar.Cotizacion__r.SBQQ__Opportunity2__r.Oportunidad_Relacionada__r.Name}</p></td></tr>
+         <tr><td><p><b>Descripción: </b>{!grupoAprobar.Descripcion__c}</p></td></tr>
+         <tr><td><p>
+            <b>Lista de precios: </b>{!grupoAprobar.Cotizacion__r.SBQQ__PriceBook__r.Name}
+         </p></td></tr>
+      </table>
+      <div class="box-full">
+         <h2 class="heading heading--sub">Productos</h2>
+         <table class="infoTable" border="0.5" style="border-color:#e5e5e5;" cellspacing="0">
+            <tr>
+               <!-- Lista normal-->
+               <th>Imagen</th>
+               <th>Codigo</th>
+               <th>Producto </th>
+               <th>Cantidad en metros</th>
+               <th>Cantidad</th>
+               <th>Clasificación </th>
+               <th>Precio por metro</th>
+               <th>Precio de lista </th>
+               <th>Descuento </th>
+               <th>Precio con descuento</th>
+               <th>Importe bruto</th>
+               <th>Margen franquicia</th>
+            </tr>
+            <apex:repeat value="{!quoteLine}" var="quoteLineItem">
+               <tr>
+                  <td>
+                     <img width="55" height="55" id="img3" src="{!IF(quoteLineItem.SBQQ__Product__r.Bandera_Dummy__c, $Resource.ImagenDummy, quoteLineItem.SBQQ__Product__r.INT_Imagen_URL__c)}" />
+                  </td>
+                  <!-- Lista normal-->
+                  <td>{!quoteLineItem.SBQQ__Product__r.ProductCode}</td>
+                  <td>{!quoteLineItem.SBQQ__Product__r.Name}</td>
+                  <td>{!quoteLineItem.METROS__c}</td>
+                  <td>{!quoteLineItem.SBQQ__Quantity__c}</td>
+                  <td>{!quoteLineItem.Clasificacion__c}</td>
+                  <td>{!IF( TEXT(quoteLineItem.INT_Precio_unitario_por_metro__c) == '', '','$'+ TEXT(quoteLineItem.INT_Precio_unitario_por_metro__c)) }</td>
+                  <td>{!IF( TEXT(quoteLineItem.SBQQ__ListPrice__c)=='', '','$'+TEXT(quoteLineItem.SBQQ__ListPrice__c)) }</td>
+                  <td>{!IF( TEXT(quoteLineItem.SBQQ__Discount__c)=='', '', TEXT(quoteLineItem.SBQQ__Discount__c)+'%')}</td>
+                  <td>{!IF( TEXT(quoteLineItem.PRECIO_DESCUENTO__c)=='','','$'+TEXT(quoteLineItem.PRECIO_DESCUENTO__c))}</td>
+                  <td>{!IF( TEXT(quoteLineItem.IMPORTE_BRUTO__c)=='','','$'+TEXT(quoteLineItem.IMPORTE_BRUTO__c))}</td>
+                  <td>{!IF( TEXT(quoteLineItem.MARGEN_FRANQUICIA__c)=='','','$'+TEXT(quoteLineItem.MARGEN_FRANQUICIA__c))}</td>
+                  <!-- Lista Kohler-->
+               </tr>
+            </apex:repeat>
+         </table>
+      </div>
+
+      
+      <br></br>
+      <br></br>
+      <br></br>
+      <div style="width: 100%; align-items: center;">
+         <p style="text-align: center;"><b>Atentamente</b>
+            <br></br> {!user.name}
+            <br></br>{!user.Title}
+            <br></br>{!user.phone} EXT. {!user.Extension}
+            <br></br>{!user.email}
+         </p>
+      </div>
+   </body>
+
+   </html>
+</apex:page>

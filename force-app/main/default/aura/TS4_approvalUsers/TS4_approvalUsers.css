@@ -1,0 +1,21 @@
+.THIS .list {
+    list-style-type: none; /* Quita los puntos predeterminados */
+    padding: 0; /* Elimina el espaciado interno de la lista */
+    margin: 0; /* Elimina el espaciado externo de la lista */
+}
+
+.THIS .actor-item {
+    border-bottom: 1px solid #d8dde6; /* Color del borde */
+    padding: 8px 0; /* Espaciado arriba y abajo */
+    margin: 0px 10px;
+    margin-bottom: 8px; /* Espaciado debajo del elemento */
+}
+
+.THIS .actor-item:last-child {
+    border-bottom: none; /* Eliminar el borde en el último elemento */
+}
+
+.THIS .slds-media {
+    padding: 8px 0; /* Espaciado arriba y abajo */
+    border-bottom: 0.6px solid #757574; /* Color del borde */
+}

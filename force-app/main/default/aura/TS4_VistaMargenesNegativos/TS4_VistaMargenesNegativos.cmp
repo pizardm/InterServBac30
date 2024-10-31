@@ -1,0 +1,66 @@
+<aura:component controller="TS4_VistaMargenesNegativosController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="showbutton" type="Boolean" default="false"/>
+    <aura:attribute name="showModal" type="Boolean" default="false"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="data" type="Object[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="MsgMargenesNegativos" type="String" />
+
+    <aura:if isTrue="{!v.showbutton}">
+        <lightning:card>
+        <div class="card">
+            <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_2-of-3">
+                <div class="texto">
+                    <p class="slds-p-left_medium " value="">
+                        {!v.MsgMargenesNegativos}
+                    </p>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+                <div class="boton">
+                    <lightning:button variant="brand" label="Ver" iconName="utility:zoomin" iconPosition="right" title="viewRecords" onclick="{!c.showWindow}"/>
+                </div>
+            </div>
+        </div>
+        </div>
+            
+        </lightning:card>
+    </aura:if>
+
+    <aura:if isTrue="{!v.showModal}">
+            <div role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_large ">
+                
+                <div class="slds-modal__container">
+                    <!-- Modal header -->
+                    <div class="slds-modal__header"></div>
+                    <!-- Modal content -->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="height: 550px;  ">
+                        
+                            <lightning:card variant="Narrow" title="Productos" iconName="standard:product">
+                                <div class="cardTable">
+                                    <div style="height: 465px; ">
+                                        <lightning:datatable aura:id="datatable"
+                                                            keyField="Id"
+                                                            data="{!v.data}"
+                                                            columns="{! v.columns }"
+                                                            hideCheckboxColumn="true"
+                                                            />                                
+                                    </div>
+                                </div>
+                            </lightning:card>
+                        
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="slds-modal__footer" >
+                        <lightning:button variant="brand" label="Cerrar" title="Cerrar" onclick="{!c.closeFileModal}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        
+        
+        
+    </aura:if>
+</aura:component>

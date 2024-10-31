@@ -1,0 +1,7 @@
+<design:component label="TS4 Modal Quote Rejected">
+    <design:attribute name="isOpen" label="Is Open" />
+    <design:supportedFormFactors>
+        <design:supportedFormFactor type="Large"/> <!-- Soporte para escritorio -->
+        <design:supportedFormFactor type="Small"/> <!-- Soporte para móviles -->
+    </design:supportedFormFactors>
+</design:component>

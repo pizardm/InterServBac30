@@ -1,0 +1,41 @@
+<aura:component
+  controller="ApprovalGrupoController"
+  implements="flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId"
+>
+  <!-- Atributos para el componente -->
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="error" type="String" />
+  <aura:attribute name="success" type="Boolean" default="false" />
+  <aura:attribute name="showSpinner" type="Boolean" default="false" />
+  <aura:attribute name="notificationTitle" type="String" />
+  <aura:attribute name="notificationMessage" type="String" />
+  <aura:attribute name="notificationType" type="String" />
+  <!-- Servicio de notificaciones -->
+  <lightning:notificationsLibrary aura:id="notificationsLibrary" />
+  <!-- Estilos personalizados -->
+  <aura:html tag="style">
+    .bodyWrapper { visibility: hidden; }
+    .slds-modal__header  { visibility: hidden; }
+    .slds-modal__content { visibility: hidden; }
+    .slds-modal__container { visibility: hidden; }
+    .slds-modal { visibility: hidden; }
+    .quick-actions-panel { visibility: hidden; }
+    .runtime_platform_actionsQuickActionWrapper { visibility: hidden; }
+    .modal-body  { visibility: hidden; }
+    .modal-container   { visibility: hidden; }
+    .slds-modal    { visibility: hidden; }
+  </aura:html>
+
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <aura:if isTrue="{!v.showSpinner}">
+    <div class="slds-spinner_container" style="background-color: transparent">
+      <div
+        class="slds-spinner--brand slds-spinner slds-spinner--medium slds-is-relative"
+      >
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+  </aura:if>
+</aura:component>

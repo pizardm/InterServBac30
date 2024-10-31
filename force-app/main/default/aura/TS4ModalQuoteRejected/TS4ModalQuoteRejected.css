@@ -1,0 +1,38 @@
+/* Estilo del contenedor del encabezado y pie del modal */
+.THIS .header-footer-container {
+    background-color: orange;
+    border-radius: 5px 5px;
+}
+
+/* Estilo del encabezado del modal */
+.THIS .slds-modal__header {
+    
+}
+
+/* Estilo del contenido del modal */
+.THIS .slds-modal__content {
+    font-size: 1.5rem;
+    color: #333;
+    text-align: center;
+}
+
+/* Estilo del pie del modal */
+.THIS .slds-modal__footer {
+    border-top: 1px solid #d8dde6;
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Estilo del botón cerrar */
+.THIS .slds-modal__close {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Estilo del botón de acción */
+.THIS .slds-button {
+    margin: 0 0.5rem;
+}

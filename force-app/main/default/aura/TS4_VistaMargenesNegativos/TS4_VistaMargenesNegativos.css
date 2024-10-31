@@ -1,0 +1,13 @@
+.THIS .card {
+    border: solid rgb(0, 132, 255) 3px;
+    padding: 1.2rem;
+    font-size: large;
+}
+
+.THIS .texto {
+    color: red;
+}
+
+.THIS .cardTable {
+    border: solid rgb(0, 0, 0) 1px;
+}

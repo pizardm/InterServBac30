@@ -1,0 +1,72 @@
+<aura:component controller="TS4_ServiceResourceManagerController" implements="force:appHostable,flexipage:availableForAllPageTypes">
+    <!-- Atributos -->
+    <aura:attribute name="supervisorId" type="Id" />
+    <aura:attribute name="agentes" type="List" />
+    <aura:attribute name="selectedAgente" type="Object" />
+    <aura:attribute name="gruposHabilidades" type="List" />
+    <aura:attribute name="habilidadesNormales" type="List" />
+    <aura:attribute name="habilidadesGuardia" type="List" />
+    <aura:attribute name="fechaInicioGuardia" type="Date" />
+    <aura:attribute name="fechaFinGuardia" type="Date" />
+    <aura:attribute name="isEnGuardia" type="Boolean" default="false" />
+
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <!-- Componente -->
+    <div class="slds-box slds-theme_default">
+        <h1 class="slds-text-heading_medium">Asignación de Guardias y Habilidades</h1>
+        
+        <!-- Selección de Agente -->
+        <lightning:select name="selectAgente" label="Seleccione un Agente" onchange="{!c.handleAgenteChange}">
+            <option value="">Seleccione...</option>
+            <aura:iteration items="{!v.agentes}" var="agente">
+                <option value="{!agente.Id}">{!agente.Name}</option>
+            </aura:iteration>
+        </lightning:select>
+
+        <!-- Información de Guardia -->
+        <aura:if isTrue="{!v.selectedAgente}">
+            <div class="slds-m-top_medium">
+                <p>Estado de Guardia: {!v.isEnGuardia ? 'En Guardia' : 'No en Guardia'}</p>
+                <aura:if isTrue="{!v.isEnGuardia}">
+                    <p>Fecha de Inicio: {!v.fechaInicioGuardia}</p>
+                    <p>Fecha de Fin: {!v.fechaFinGuardia}</p>
+                </aura:if>
+            </div>
+        </aura:if>
+
+        <!-- Selección de Grupo de Habilidades -->
+        <lightning:radioGroup name="grupoHabilidades"
+                              label="Grupo de Habilidades"
+                              options="{!v.gruposHabilidades}"
+                              value="{!v.selectedGrupoHabilidades}"
+                              onchange="{!c.handleGrupoHabilidadesChange}" />
+
+        <!-- Fechas de Guardia -->
+        <lightning:input type="date" name="fechaInicio" label="Fecha de Inicio de Guardia" value="{!v.fechaInicioGuardia}" />
+        <lightning:input type="date" name="fechaFin" label="Fecha de Fin de Guardia" value="{!v.fechaFinGuardia}" />
+
+        <!-- Habilidades -->
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col">
+                <h2 class="slds-text-heading_small">Habilidades Normales</h2>
+                <lightning:checkboxGroup name="habilidadesNormales"
+                                         options="{!v.habilidadesNormales}"
+                                         value="{!v.selectedHabilidadesNormales}" />
+            </div>
+            <div class="slds-col">
+                <h2 class="slds-text-heading_small">Habilidades Guardia</h2>
+                <lightning:checkboxGroup name="habilidadesGuardia"
+                                         options="{!v.habilidadesGuardia}"
+                                         value="{!v.selectedHabilidadesGuardia}" />
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="slds-m-top_medium">
+            <lightning:button label="Cancelar" onclick="{!c.handleCancel}" />
+            <lightning:button label="Asignar Guardia" variant="brand" onclick="{!c.handleAsignarGuardia}" />
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,5 @@
+.THIS .slds-grid .slds-button {
+    padding: 0.2rem 0.5rem;  /* Ajusta el padding de los botones */
+    font-size: 0.75rem;      /* Reduce el tamaño del texto */
+    margin-top: 1rem; 
+}

@@ -1,0 +1,21 @@
+<apex:page >
+<script type='text/javascript'>
+    function initEmbeddedMessaging() {
+        try {
+            embeddedservice_bootstrap.settings.language = 'es_MX'; // For example, enter 'en' or 'en-US'
+
+            embeddedservice_bootstrap.init(
+                '00DcY0000000HX7',
+                'ChatBot',
+                'https://interceramic--devservice.sandbox.my.site.com/ESWChatBot1721170831890',
+                {
+                    scrt2URL: 'https://interceramic--devservice.sandbox.my.salesforce-scrt.com'
+                }
+            );
+        } catch (err) {
+            console.error('Error loading Embedded Messaging: ', err);
+        }
+    };
+</script>
+<script type='text/javascript' src='https://interceramic--devservice.sandbox.my.site.com/ESWChatBot1721170831890/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+</apex:page>

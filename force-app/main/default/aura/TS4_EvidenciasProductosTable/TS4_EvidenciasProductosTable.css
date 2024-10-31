@@ -1,0 +1,4 @@
+.THIS .slds-modal__container {
+    display: block !important;
+    visibility: visible !important;
+}

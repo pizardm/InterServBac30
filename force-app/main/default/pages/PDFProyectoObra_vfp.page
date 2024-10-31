@@ -1,0 +1,730 @@
+<apex:page standardStylesheets="false" controller="PDFProyectoObra_ctr" showHeader="false" applyBodyTag="false"
+    applyHtmlTag="false" renderAs="PDF" sidebar="false" language="es_ES">
+
+    <head>
+        <style>
+            @page {
+                size: A4;
+                margin-top: 1.5in;
+                margin-bottom: 1.1in;
+                margin-right: 0.5in;
+                margin-left: 0.5in;
+
+                @top-left {
+                    content: element(header);
+                }
+
+                @bottom-right {
+                    font-size: 10pt;
+                    font-family: Arial, sans-serif;
+                    content: "Pg." counter(page) "/" counter(pages);
+                }
+
+                @bottom-left {
+                    content: element(footer);
+                }
+            }
+
+            body {
+                /*font-family: Arial Unicode MS;*/
+                text-align: justify;
+                text-rendering: geometricPrecision;
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+            }
+
+            .textleft {
+                text-align: left;
+            }
+
+            .textright {
+                text-align: right;
+            }
+
+            .p10 {
+                padding: 10px 0;
+            }
+
+            .p20 {
+                padding: 20px 0;
+            }
+
+            .p30 {
+                padding: 30px 0;
+            }
+
+            .pt30 {
+                padding-top: 30px;
+            }
+
+            .p2 {
+                padding: 2px;
+            }
+
+            .pr2 {
+                padding-right: 2px;
+            }
+
+            .pl50 {
+                padding-left: 20px;
+            }
+
+            table {
+                -fs-table-paginate: paginate;
+                margin: 0 auto;
+                width: 100%;
+                text-align: center;
+                font-size: 8pt;
+            }
+
+            th {
+                font-weight: bold;
+            }
+
+            td {
+                text-align: center;
+                font-size: 8pt;
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+
+            .textRows {
+                width: 10px;
+                height: 10px;
+                text-align: center;
+                overflow: hidden;
+                white-space: normal;
+                text-overflow: ellipsis;
+            }
+
+            .textCenter {
+                text-align: center;
+            }
+
+            .logoBanner {
+                height: 100px;
+            }
+
+            .floatLeft {
+                position: relative;
+                left: 0px;
+                bottom: -20px;
+            }
+
+            .floatRight {
+                position: relative;
+                left: 230px;
+                bottom: 100px;
+            }
+
+            .borderFirma {
+                height: 100px;
+                border-right: solid #032952 2pt;
+            }
+
+            .fuenteSmall {
+                font-size: small;
+            }
+
+            div.header {
+                font-family: Arial, sans-serif;
+                margin-top: 10px;
+                position: running(header);
+                width: 100%;
+                margin-left: 10px;
+            }
+
+            .bold-text {
+                font-weight: bold;
+            }
+
+            .grayBackground {
+                background-color: #d9d9d9;
+            }
+
+            .consumoBackground {
+                background-color: #bfbfbf;
+            }
+        </style>
+    </head>
+
+    <!-- Header -->
+    <header>
+        <div class="header">
+            <img src="{!$Resource.INT_LogoInterceramic}" alt="Logo Interceramic" class="logoBanner"
+                style="height: 45px; width: 300px" />
+            <p style="font-size: 8pt; margin-left: 10px">
+                {!sInterceramicData1}<br /> {!sInterceramicData2}<br />
+                {!sInterceramicData3}
+            </p>
+        </div>
+    </header>
+
+    <body>
+        <div class="textright p10">
+            <apex:outputText value="{0, date, d 'de '}{!CASE(MONTH(DATEVALUE(NOW())),
+                                    1, 'Enero',
+                                    2, 'Febrero',
+                                    3, 'Marzo', 
+                                    4, 'Abril', 
+                                    5, 'Mayo', 
+                                    6, 'Junio',
+                                    7, 'Julio',
+                                    8, 'Agosto',
+                                    9, 'Septiembre',
+                                    10, 'Octubre',
+                                    11, 'Noviembre',
+                                    12, 'Diciembre',
+                                    '-')}{0, date, ' de' yyyy}">
+                <!--dttInicio-->
+                <apex:param value="{!NOW()}" />
+                <!--dttInicio-->
+            </apex:outputText>
+        </div>
+        <div class="textright" style="font-size: 12pt; font-weight: bold">
+            {!sConvenioId}
+        </div>
+
+        <div style="font-weight: bold; font-size: 12pt" class="p10">{!sName}</div>
+        <div style="font-weight: bold; text-transform: uppercase; font-size: 10pt">
+            {!sNombreContactoFirma}
+        </div>
+        <div style="font-weight: bold; text-transform: uppercase; font-size: 10pt">
+            {!sNombreContactoCargo}
+        </div>
+        <div style="font-weight: bold; text-transform: uppercase; font-size: 10pt">
+            {!sNombreCuenta}
+        </div>
+        <div style="font-weight: bold; text-transform: uppercase; font-size: 10pt">
+            {!sDireccionCuenta}
+        </div>
+        <div style="font-weight: bold; text-transform: uppercase; font-size: 10pt">
+            {!sCiudad}
+        </div>
+        <div style="font-weight: bold; text-transform: uppercase; font-size: 10pt">
+            {!sNombreOportunidad}
+        </div>
+        <div style="font-weight: bold; text-transform: uppercase; font-size: 10pt">
+            {!sDireccionOpp}
+        </div>
+
+        <div class="p10">
+            <p style="line-height: 0">{!sContactoPrincipal}</p>
+            <apex:outputText value="{!sEncabezado}" escape="false" />
+        </div>
+        <div class="p10">
+            <apex:outputText value="{!sCondicion1}" escape="false" />
+            <!--{!sCondicion1}-->
+        </div>
+
+        <!-- Tabla Primera tabla -->
+        <div class="pt30">
+            <apex:form >
+                <table border="1" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding-left: 3px; width: 32px">
+                                Producto
+                            </th>
+                            <th style="text-align: left; padding-left: 3px; width: 8px">
+                                Unidad de Medida
+                            </th>
+                            <th style="text-align: left; padding-left: 3px; width: 9px">
+                                Cantidad
+                            </th>
+                            <th style="text-align: left; padding-left: 3px; width: 9px">
+                                Precio de Lista
+                            </th>
+                            <th style="text-align: left; padding-left: 3px; width: 10px">
+                                % de Descuento
+                            </th>
+                            <th style="text-align: left; padding-left: 3px; width: 9px">
+                                Precio proyecto por m^2
+                            </th>
+                            <th style="text-align: left; padding-left: 3px; width: 10px">
+                                Precio Proyecto Unidad de Venta
+                            </th>
+                            <th style="padding-left: 3px; width: 15px; text-align: right">
+                                Total Proyecto
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!listQuoteLineItem}" var="item">
+                            <tr style="text-align: left">
+                                <td rowspan="1" style="text-align: left; padding-left: 3px; width: 32px">
+                                    <apex:outputField value="{!item.SBQQ__Product__r.Name}" />
+                                </td>
+                                <td style="text-align: left; padding-left: 3px; width: 8px" rowspan="1">
+                                    <apex:outputField value="{!item.SBQQ__Product__r.UnidadVenta__c}" />
+                                </td>
+                                <td style="text-align: left; padding-left: 3px; width: 9px" rowspan="1">
+                                    <apex:outputText value="{0,number,#}">
+                                        <apex:param value="{!item.SBQQ__Quantity__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td style="text-align: left; padding-left: 3px; width: 9px" rowspan="1">
+                                    <!--<apex:outputText value="{0,number, $#,###,###.00}">
+                                        <apex:param value="{!item.SBQQ__ListPrice__c}" />
+                                    </apex:outputText>-->
+                                    <!--Precio_unitario_de_lista_sin_Iva__c-->
+                                    <!--<apex:outputText value="{0,number, $#,###,###.00}">
+                                       <apex:param value="{!item.Precio_de_Lista_MB__c}" />
+                                    </apex:outputText>-->
+                                    <apex:outputText value="{0,number, $#,###,###.00}">
+                                        <apex:param value="{!item.Precio_unitario_de_lista_sin_Iva__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td style="text-align: left; padding-left: 3px; width: 10px" rowspan="1">
+                                    <apex:outputText value="{0,number,#.00%}">
+                                        <!--<apex:param value="{!item.SBQQ__Discount__c * 0.01}" />-->
+                                        <apex:param value="{!item.Porcentaje_Descuento_MB__c * 0.01}" />
+                                    </apex:outputText>
+                                </td>
+                                <td style="text-align: left; padding-left: 3px; width: 9px" rowspan="1">
+                                    <apex:outputText value="{0,number, $#,###,###.00}">
+                                        <apex:param value="{!item.INT_Precio_unitario_por_metro__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td style="text-align: left; padding-left: 3px; width: 10px" rowspan="1">
+                                    <apex:outputText value="{0,number, $#,###,###.00}">
+                                        <!--<apex:param value="{!item.SBQQ__NetPrice__c}" />-->
+                                        <apex:param value="{!item.Precio_Proyecto_Unidad_de_Venta_MB__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td style="text-align: right; padding-left: 3px; width: 15px" rowspan="1">
+                                    <apex:outputText value="{0,number, $#,###,###.00}">
+                                        <!--<apex:param value="{!item.SBQQ__NetTotal__c}" />-->
+                                        <apex:param value="{!item.Total_proyecto_MB__c}" />
+                                        <!--<apex:param value="{!item.Total_proyecto_Doc_Convenio__c}" />-->
+                                        <!--<apex:param value="{!item.Total_proyecto_MB_flow__c}"/>-->
+                                    </apex:outputText>
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                    <div class="textright p10">
+                        <apex:outputText value="{0,number, $#,###,###.00}">
+                            TOTAL:
+                            <apex:param value="{!dPrecioTotal}" />
+                        </apex:outputText>
+                    </div>
+                </table>
+            </apex:form>
+        </div>
+        <!-- Fin Tabla Primera tabla -->
+
+        <div style=" font-size: 8pt">
+            <li>
+                <ul>
+                    Precio de lista informativo, calculado a la fecha de esta carta.
+                </ul>
+            </li>
+            <li>
+                <ul>
+                    Precio bruto (sin IVA), en Moneda Nacional.
+                </ul>
+            </li>
+            <li>
+                <ul>
+                    Descuentos fijos válidos hasta el día 31 de Diciembre del
+                    <apex:outputText value="{0, date, yyyy}">
+                        <apex:param value="{!NOW()}" />
+                    </apex:outputText>, sobre el precio de lista vigente al momento de la facturación del
+                    producto, en los términos señalados en el punto número 3 de esta
+                    carta.
+                </ul>
+            </li>
+            <apex:outputPanel rendered="{!(!sListaPreciosPenin)}">
+                    <li>
+                        <ul>
+                            Estos precios solo son validos para las zonas de Chiapas en las ciudades de Comitan de
+                            Dominguez, San Cristobal de las Casas,
+                            Tapachula, Tuxtla Gutierrez, para la zona de Quintana Roo en las ciudades de Benito Juarez,
+                            Cozumel, Othon P. Blanco, Solidaridad,
+                            Tulum y para la zona de Yucatan en las ciudades de Merida y Valladolid. Su ejecutivo podra
+                            informarle sobre las variaciones de
+                            precios.
+                        </ul>
+                    </li>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!sListaPreciosPenin}">
+                <li>
+                    <ul>
+                        Estos precios no son válidos para las zonas de Chiapas en las ciudades de Comitán de Dominguez,
+                        San Cristóbal de las Casas,
+                        Tapachula, Tuxtla Gutierrez, para la zona de Quintana Roo en las ciudades de Benito Juarez,
+                        Cozumel, Othón P. Blanco,
+                        Solidaridad, Tulum y para la zona de Yucatán en las ciudades de Mérida y Valladolid. Para
+                        conocer los precios ver Anexo C.
+                    </ul>
+                </li>
+            </apex:outputPanel>
+        </div>
+        <div class="p10">
+            <apex:outputText value="{!sCondicion2}" escape="false" />
+            <!--{!sCondicion2}-->
+        </div>
+        <div class="p10">
+            <apex:outputText value="{!sCondicion3}" escape="false" />
+            <!--{!sCondicion3}-->
+        </div>
+        <div class="p10">
+            <apex:outputText value="{!sCondicion4}" escape="false" />
+            <!--{!sCondicion4}-->
+        </div>
+        <div class="p10">
+            <apex:outputText value="{!sCondicion5}" escape="false" />
+            <!--{!sCondicion5}-->
+        </div>
+        <div class="p10" style="page-break-after: always">
+            <apex:outputText value="{!sCondicion6}" escape="false" />
+            <!--{!sCondicion6}-->
+        </div>
+
+        <!-- Salto de página -->
+
+        <div class="p10">
+            <apex:outputText value="{!sCondicion7}" escape="false" />
+            <!--{!sCondicion7}-->
+        </div>
+
+        <div class="p10">{!sFirmaFecha}</div>
+        <br />
+        <br />
+        <table class="textCenter" style="padding-bottom: 20%">
+            <tr>
+                <td colspan="3" class="p10 pl50 bold-text">
+                    <div style="font-size: 10pt">INTERCERAMIC</div>
+                </td>
+                <td colspan="3" class="p10 pl50 bold-text">
+                    <div style="font-size: 10pt">{!sNombredeCuenta}</div>
+                </td>
+            </tr>
+        </table>
+        <table style="page-break-after: always; padding-left: 15%">
+            <tr>
+                <td colspan="3" style="text-align: left" class="bold-text">
+                    <div style="font-size: 8pt">{!sNombreEjecutivo}</div>
+                    <div style="font-size: 8pt">{!sNombrePerfil}</div>
+                    <div style="font-size: 8pt">T. {!sEjecutivoTelefono}</div>
+                    <div style="font-size: 8pt">C. {!sEjecutivoCelular}</div>
+                    <div style="font-size: 8pt">E. {!sEjecutivoCorreo}</div>
+                </td>
+                <td colspan="3" style="text-align: left" class="bold-text">
+                    <div style="font-size: 8pt">{!sNombreContactoFirma}</div>
+                    <div style="font-size: 8pt">{!sNombreContactoCargo}</div>
+                    <div style="font-size: 8pt">T. {!sNombreContactoTelefono}</div>
+                    <div style="font-size: 8pt">C. {!sNombreContactoCelular}</div>
+                    <div style="font-size: 8pt">E. {!sNombreContactoCorreo}</div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Anexo A -->
+        <div class="p10">
+            <div class="textCenter">
+                <strong>Anexo "A"</strong>
+            </div>
+            <div class="textCenter">
+                <strong>Contratista/Constructor</strong>
+            </div>
+            <br />
+            <br />
+            <div>{!sAnexoA}</div>
+            <br />
+            <br />
+            <div class="textCenter" style="font-weight: bold; font-size: 16pt">
+                {!sNombreOportunidad}
+            </div>
+            <div class="textCenter" style="font-weight: bold; font-size: 16pt">
+                Número de convenio: {!sConvenioId}
+            </div>
+        </div>
+
+        <!-- Tabla Intermedia -->
+        <apex:form >
+            <table border="1" cellspacing="0">
+                <thead>
+                    <tr class="textCenter">
+                        <th>Descripción</th>
+                        <th>Unidad de Medida</th>
+                        <th>Cantidad</th>
+                        <th>% de Descuento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!listQuoteLineItem}" var="item">
+                        <tr>
+                            <td rowspan="1">
+                                <apex:outputField value="{!item.SBQQ__Product__r.Name}" />
+                            </td>
+
+                            <td rowspan="1">
+                                <apex:outputField value="{!item.SBQQ__Product__r.UnidadVenta__c}" />
+                            </td>
+                            <td rowspan="1">
+                                <apex:outputText value="{0,number, #,###,###.00}">
+                                    <apex:param value="{!item.SBQQ__Quantity__c}" />
+                                </apex:outputText>
+                            </td>
+                            <td rowspan="1">
+                                <apex:outputText value="{0,number,#.00%}">
+                                    <apex:param value="{!item.SBQQ__Discount__c * 0.01}" />
+                                </apex:outputText>
+                                <!--<apex:outputField value="{!item.SBQQ__Discount__c }" />-->
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                </tbody>
+            </table>
+        </apex:form>
+        <!-- Fin Tabla Intermedia -->
+
+        <div class="p10" style="font-size: 8pt">
+            <ul>
+                <li>
+                    Verifique con el ejecutivo de ventas de la franquicia Interceramic
+                    existencias, anticipos y tiempos de entrega por obra. Anticipe sus
+                    compras.
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    Una vez confirmado por el ejecutivo de ventas que se cuenta con el
+                    inventario y el producto es pagado, el tiempo estimado de tránsito del
+                    material desde las plantas productivas Interceramic al centro de
+                    distribución de la franquicia más cercana a la ubicación física del
+                    proyecto, es de 3 semanas.
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    Todos los productos son Libre a Bordo (FOB / LAB) y entregados a Pie
+                    de Carro en Obra. En caso de que la Obra esté a más de 30 kilómetros a
+                    la redonda del centro de distribución de la Franquicia Interceramic
+                    correspondiente, se podrá aplicar un sobre costo. En caso de que la
+                    entrega de los productos se solicite en horas no laborales o en días
+                    inhábiles, se deberá revisar con el ejecutivo Interceramic si aplica
+                    un sobrecosto por la entrega.
+                </li>
+            </ul>
+        </div>
+        <div style="page-break-after: always; font-size: 8pt">
+            {!sAnexoAContacto}
+        </div>
+        <!-- Fin Anexo A -->
+
+        <!-- Anexo B -->
+        <div class="p10">
+            <div class="textCenter">
+                <strong>Anexo "B"</strong>
+            </div>
+            <div class="textCenter">
+                <strong>Calendario de Suministro</strong>
+            </div>
+        </div>
+
+        <!--Calendario de Consumo-->
+        <apex:repeat value="{!mapOppCc}" var="year">
+            {!year}
+            <apex:form >
+                <table border="1" cellspacing="0">
+                    <thead>
+                        <tr class="textCenter consumoBackground">
+                            <th>Descripción</th>
+                            <th></th>
+                            <th>Ene</th>
+                            <th>Feb</th>
+                            <th>Mar</th>
+                            <th>Abr</th>
+                            <th>May</th>
+                            <th>Jun</th>
+                            <th>Jul</th>
+                            <th>Ago</th>
+                            <th>Sep</th>
+                            <th>Oct</th>
+                            <th>Nov</th>
+                            <th>Dic</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <apex:repeat value="{!mapOppCc[year]}" var="key">
+                        <tr>
+                            <td colspan="1" rowspan="3" class="consumoBackground">
+                                {!mapOppLine[key].Product2.Name}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="1" colspan="1" class="consumoBackground">
+                                <apex:outputText >Cant.</apex:outputText>
+                            </td>
+                            <apex:repeat value="{!mapOppCc[year][key]}" var="item">
+                                <td class="{!IF(item.INT_Cantidad__c != 0, '', 'grayBackground')}">
+                                    <apex:outputText value="{!IF(item.INT_Mes__c != null, item.INT_Cantidad__c, 0)}" />
+                                </td>
+                            </apex:repeat>
+                            <td>{!OppLineTotal[year][key]}</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="1" colspan="1" class="consumoBackground">
+                                <apex:outputText >Mts.</apex:outputText>
+                            </td>
+                            <apex:repeat value="{!mapOppCc[year][key]}" var="item">
+                                <td class="{!IF(item.INT_Metros_Cuadrados__c != 0, '', 'grayBackground')}">
+                                    <apex:outputText value="{!IF(item.INT_Mes__c != null, item.INT_Metros_Cuadrados__c, 0)}" />
+                                </td>
+                            </apex:repeat>
+                            <td>{!OppLineMetrosTotal[year][key]}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </apex:form>
+        </apex:repeat>
+
+        <apex:outputPanel rendered="{!sListaPreciosPenin}">
+            <!-- Anexo C -->
+            <div class="p10">
+                <div class="textCenter">
+                    <strong>Anexo "C"</strong>
+                </div>
+                <div class="textCenter">
+                    <strong>Precios zonas Península.</strong>
+                </div>
+            </div>
+
+            <!-- Tabla Primera tabla -->
+            <div class="pt30">
+                <apex:form >
+                    <table border="1" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; padding-left: 3px; width: 32px">
+                                    Producto
+                                </th>
+                                <th style="text-align: left; padding-left: 3px; width: 8px">
+                                    Unidad de Medida
+                                </th>
+                                <th style="text-align: left; padding-left: 3px; width: 9px">
+                                    Cantidad
+                                </th>
+                                <th style="text-align: left; padding-left: 3px; width: 9px">
+                                    Precio de Lista
+                                </th>
+                                <th style="text-align: left; padding-left: 3px; width: 10px">
+                                    % de Descuento
+                                </th>
+                                <th style="text-align: left; padding-left: 3px; width: 9px">
+                                    Precio proyecto por m^2
+                                </th>
+                                <th style="text-align: left; padding-left: 3px; width: 10px">
+                                    Precio Proyecto Unidad de Venta
+                                </th>
+                                <th style="padding-left: 3px; width: 15px; text-align: right">
+                                    Total Proyecto
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <apex:repeat value="{!listQuoteLineItem}" var="item">
+                                <tr style="text-align: left">
+                                    <td rowspan="1" style="text-align: left; padding-left: 3px; width: 32px">
+                                        <apex:outputField value="{!item.SBQQ__Product__r.Name}" />
+                                    </td>
+                                    <td style="text-align: left; padding-left: 3px; width: 8px" rowspan="1">
+                                        <apex:outputField value="{!item.SBQQ__Product__r.UnidadVenta__c}" />
+                                    </td>
+                                    <td style="text-align: left; padding-left: 3px; width: 9px" rowspan="1">
+                                        <apex:outputText value="{0,number,#}">
+                                            <apex:param value="{!item.SBQQ__Quantity__c}" />
+                                        </apex:outputText>
+                                    </td>
+                                    <td style="text-align: left; padding-left: 3px; width: 9px" rowspan="1">
+                                        <!--<apex:outputText value="{0,number, $#,###,###.00}">
+                                                <apex:param value="{!item.SBQQ__ListPrice__c}" />
+                                            </apex:outputText>-->
+                                        <!--Precio_unitario_de_lista_sin_Iva__c-->
+                                        <!--<apex:outputText value="{0,number, $#,###,###.00}">
+                                               <apex:param value="{!item.Precio_de_Lista_MB__c}" />
+                                            </apex:outputText>-->
+                                        <apex:outputText value="{0,number, $#,###,###.00}">
+                                            <apex:param value="{!item.Precio_unitario_de_lista_peninsula__c}" />
+                                        </apex:outputText>
+                                    </td>
+                                    <td style="text-align: left; padding-left: 3px; width: 10px" rowspan="1">
+                                        <apex:outputText value="{0,number,#.00%}">
+                                            <!--<apex:param value="{!item.SBQQ__Discount__c * 0.01}" />-->
+                                            <apex:param value="{!item.Porcentaje_Descuento_MB__c * 0.01}" />
+                                        </apex:outputText>
+                                    </td>
+                                    <td style="text-align: left; padding-left: 3px; width: 9px" rowspan="1">
+                                        <apex:outputText value="{0,number, $#,###,###.00}">
+                                            <apex:param value="{!item.Precio_unitario_por_metro_peninsula__c}" />
+                                        </apex:outputText>
+                                    </td>
+                                    <td style="text-align: left; padding-left: 3px; width: 10px" rowspan="1">
+                                        <apex:outputText value="{0,number, $#,###,###.00}">
+                                            <!--<apex:param value="{!item.SBQQ__NetPrice__c}" />-->
+                                            <apex:param value="{!item.Precio_proyecto_unidad_de_vta_peninsula__c}" />
+                                        </apex:outputText>
+                                    </td>
+                                    <td style="text-align: right; padding-left: 3px; width: 15px" rowspan="1">
+                                        <apex:outputText value="{0,number, $#,###,###.00}">
+                                            <!--<apex:param value="{!item.SBQQ__NetTotal__c}" />-->
+                                            <apex:param value="{!item.Total_neto_peninsula__c}" />
+                                            <!--<apex:param value="{!item.Total_proyecto_Doc_Convenio__c}" />-->
+                                            <!--<apex:param value="{!item.Total_proyecto_MB_flow__c}"/>-->
+                                        </apex:outputText>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </tbody>
+                        <div class="textright p10">
+                            <apex:outputText value="{0,number, $#,###,###.00}">
+                                TOTAL:
+                                <apex:param value="{!dPrecioTotalPen}" />
+                            </apex:outputText>
+                        </div>
+                    </table>
+                </apex:form>
+            </div>
+            <div style="page-break-after: always; font-size: 8pt">
+                <li>
+                    <ul>
+                        Precio de lista informativo, calculado a la fecha de esta carta.
+                    </ul>
+                </li>
+                <li>
+                    <ul>
+                        Precio bruto (sin IVA), en Moneda Nacional.
+                    </ul>
+                </li>
+                <li>
+                    <ul>
+                        Descuentos fijos válidos hasta el día 31 de Diciembre del
+                        <apex:outputText value="{0, date, yyyy}">
+                            <apex:param value="{!NOW()}" />
+                        </apex:outputText>, sobre el precio de lista vigente al momento de la facturación del
+                        producto, en los términos señalados en el punto número 3 de esta
+                        carta.
+                    </ul>
+                </li>
+                <apex:outputPanel rendered="{!sListaPreciosPenin}">
+                    <li>
+                        <ul>
+                            Estos precios son válidos para las zonas de Chiapas en las
+                            ciudades de Comitán de Dominguez, San Cristóbal de las Casas,
+                            Tapachula, Tuxtla Gutierrez, para la zona de Quintana Roo en las
+                            ciudades de Benito Juarez, Cozumel, Othón P. Blanco, Solidaridad,
+                            Tulum y para la zona de Yucatán en las ciudades de Mérida y
+                            Valladolid. Su ejecutivo podrá informarle sobre las variaciones de
+                            precios.
+                        </ul>
+                    </li>
+                </apex:outputPanel>
+                
+            </div>
+        </apex:outputPanel>
+
+    </body>
+</apex:page>

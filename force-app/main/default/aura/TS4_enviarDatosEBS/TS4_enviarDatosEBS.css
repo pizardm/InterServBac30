@@ -1,0 +1,34 @@
+.THIS .custom-modal-content {
+    width: 95%;
+    margin: 0 auto;
+}
+.THIS .custom-card {
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem 0.25rem 0 0;
+    background: white;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+.THIS .custom-card-header {
+    background-color: #f3f2f2;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid #d8dde6;
+}
+.THIS .custom-card-body {
+    padding: 1rem;
+    font-size: 1.1rem;
+    text-align: center;
+}
+.THIS .custom-modal-footer {
+    background: white;
+    border: 1px solid #d8dde6;
+    border-top: none;
+    border-radius: 0 0 0.25rem 0.25rem;
+    padding: 0.75rem;
+    text-align: right;
+}
+.THIS .slds-spinner_container {
+    height: 65%;
+    margin-top: 100px;
+}

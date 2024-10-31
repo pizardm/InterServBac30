@@ -1,0 +1,4 @@
+<apex:page >
+    <h1>Página de inicio del sitio</h1>
+    <p>Este es un sitio para exponer una API REST pública.</p>
+</apex:page>

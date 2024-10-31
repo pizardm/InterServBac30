@@ -1,0 +1,35 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+  controller="individualApproverController"
+>
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="actors" type="List" />
+  <aura:attribute name="error" type="String" />
+
+  <!-- Load data on component initialization -->
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <aura:if isTrue="{!v.error}">
+    <lightning:card title="Error">
+      <p class="slds-p-horizontal_medium">{!v.error}</p>
+    </lightning:card>
+  </aura:if>
+
+  <aura:if isTrue="{!not(empty(v.actors))}">
+    <lightning:card title="Aprobadores actuales">
+      <ul class="slds-list_dotted list" style="margin: 10px">
+        <aura:iteration items="{!v.actors}" var="actor">
+          <li class="slds-item actor-item">
+            <a
+              href="{!'/lightning/r/' + actor.Type + '/' + actor.Id + '/view'}"
+              target="_blank"
+            >
+              {!actor.Name}
+            </a>
+          </li>
+        </aura:iteration>
+      </ul>
+    </lightning:card>
+  </aura:if>
+</aura:component>
